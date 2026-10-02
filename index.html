@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>からだの体質チェック｜ひなたの森鍼灸院</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F6EFE3;--paper:#FCF8F0;--forest:#5B6A50;--forest-deep:#404B39;
+    --sage:#9AAA8A;--sage-soft:#DCE3D3;--terra:#C07A5B;--terra-soft:#EBD6C8;
+    --ink:#3F3A32;--ink-soft:#6D665B;--line:#E3D9C8;
+    --shadow:0 18px 50px -24px rgba(64,75,57,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:"Zen Kaku Gothic New",-apple-system,sans-serif;background:transparent;
+    color:var(--ink);line-height:1.85;-webkit-font-smoothing:antialiased;padding:24px 16px 56px;}
+  .mincho{font-family:"Shippori Mincho",serif;}
+  .stage{max-width:640px;margin:0 auto;}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:22px;
+    box-shadow:var(--shadow);overflow:hidden;}
+  .view{display:none;}
+  .view.active{display:block;animation:rise .5s ease both;}
+  @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  /* INTRO */
+  .hero{padding:44px 30px 38px;text-align:center;}
+  .sprout{width:52px;height:52px;margin:0 auto 18px;display:block;}
+  .eyebrow{font-size:12px;letter-spacing:.32em;color:var(--forest);font-weight:700;margin-bottom:14px;padding-left:.32em;}
+  .hero h1{font-family:"Shippori Mincho",serif;font-weight:600;font-size:clamp(24px,6.2vw,32px);
+    line-height:1.5;color:var(--forest-deep);letter-spacing:.02em;margin-bottom:6px;}
+  .hero h1 span{color:var(--terra);}
+  .hero .lead{color:var(--ink-soft);font-size:15px;margin:20px auto 0;max-width:410px;}
+  .hero .meta{margin-top:26px;display:inline-flex;gap:22px;font-size:12.5px;color:var(--forest);letter-spacing:.04em;}
+  .hero .meta b{font-family:"Shippori Mincho",serif;font-size:17px;font-weight:600;display:block;color:var(--forest-deep);}
+  .divider{height:1px;background:var(--line);margin:0 30px;}
+  .intro-note{padding:22px 30px 30px;color:var(--ink-soft);font-size:13px;}
+  .ninkatsu-ask{padding:24px 30px 4px;text-align:center;}
+  .na-label{font-size:16px;color:var(--forest-deep);font-weight:600;line-height:1.65;margin-bottom:16px;}
+  .na-opts{display:inline-flex;gap:12px;}
+  .na-opt{font-family:"Zen Kaku Gothic New",sans-serif;cursor:pointer;border:1.5px solid var(--sage);background:#fff;color:var(--forest);font-size:15px;font-weight:700;padding:10px 34px;border-radius:100px;transition:.2s;}
+  .na-opt:hover{background:var(--sage-soft);}
+  .na-opt.on{background:var(--forest);color:#fff;border-color:var(--forest);}
+
+  /* LINE養生シート */
+  .line-magnet{margin:32px 0 6px;background:#FBEEE5;border:1.5px dashed #D9A98C;border-radius:18px;padding:26px 22px;text-align:center;}
+  .lm-eyebrow{font-family:"Shippori Mincho",serif;font-size:16px;color:#9C4E30;font-weight:600;margin-bottom:12px;letter-spacing:.02em;}
+  .lm-lead{font-size:14px;color:var(--ink);margin-bottom:18px;}
+  .lm-box{background:#fff;border-radius:14px;padding:18px 16px;margin-bottom:12px;text-align:center;}
+  .lm-box-head{display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink);font-weight:700;margin-bottom:12px;}
+  .lm-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--terra);color:#fff;font-size:12px;font-weight:700;margin-right:9px;flex:none;}
+  .lm-keyword{font-size:14px;color:var(--forest-deep);margin-bottom:14px;}
+  .lm-keyword b{display:inline-block;font-family:"Shippori Mincho",serif;font-size:20px;color:var(--terra);background:#FCF8F0;border:1px solid #E6C9B6;border-radius:9px;padding:2px 14px;margin:0 3px;}
+  .lm-btn{display:inline-block;background:#06C755;color:#fff;text-decoration:none;font-weight:700;font-size:15px;letter-spacing:.04em;padding:13px 30px;border-radius:100px;box-shadow:0 10px 22px -10px rgba(6,199,85,.55);transition:.25s;}
+  .lm-btn:hover{background:#05b64c;transform:translateY(-2px);}
+  .lm-btn.outline{background:#fff;color:#06A046;border:2px solid #06C755;box-shadow:none;}
+  .lm-btn.outline:hover{background:#EFFBF3;}
+  .lm-note{font-size:12px;color:var(--ink-soft);margin-top:10px;line-height:1.7;}
+
+  /* こうのとり便り */
+  .kounotori{margin:30px 0 6px;background:#EEF1E7;border:1px solid var(--sage-soft);border-radius:18px;padding:24px 22px;text-align:center;}
+  .k-eyebrow{font-size:12px;letter-spacing:.28em;color:var(--terra);font-weight:700;margin-bottom:9px;}
+  .k-title{font-size:19px;color:var(--forest-deep);font-weight:600;margin-bottom:12px;letter-spacing:.03em;}
+  .kounotori p{font-size:13.5px;color:var(--ink);}
+  .btn{font-family:"Zen Kaku Gothic New",sans-serif;border:none;cursor:pointer;border-radius:100px;font-weight:700;letter-spacing:.06em;transition:.25s;}
+  .btn-primary{background:var(--forest);color:#fff;padding:16px 40px;font-size:15.5px;box-shadow:0 10px 22px -10px rgba(64,75,57,.7);}
+  .btn-primary:hover{background:var(--forest-deep);transform:translateY(-2px);}
+  .btn-ghost{background:transparent;color:var(--forest);border:1.5px solid var(--sage);padding:13px 26px;font-size:14px;}
+  .btn-ghost:hover{background:var(--sage-soft);}
+  .start-wrap{padding:4px 30px 40px;text-align:center;}
+
+  /* QUIZ */
+  .quiz-head{padding:26px 30px 6px;}
+  .progress-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+  .progress-track{flex:1;height:7px;background:var(--sage-soft);border-radius:100px;overflow:hidden;}
+  .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--sage),var(--forest));border-radius:100px;transition:width .45s cubic-bezier(.4,0,.2,1);}
+  .progress-label{font-size:12px;color:var(--forest);font-weight:700;letter-spacing:.05em;white-space:nowrap;}
+  .step-title{font-family:"Shippori Mincho",serif;font-size:21px;color:var(--forest-deep);font-weight:600;}
+  .step-sub{font-size:13px;color:var(--ink-soft);margin-top:6px;}
+  .q-list{padding:20px 22px 8px;}
+  .q-item{display:block;margin-bottom:11px;cursor:pointer;}
+  .q-item input{position:absolute;opacity:0;pointer-events:none;}
+  .q-face{display:flex;align-items:center;gap:14px;padding:15px 18px;border:1.5px solid var(--line);border-radius:15px;background:#fff;transition:.2s;}
+  .q-item:hover .q-face{border-color:var(--sage);}
+  .q-check{flex:none;width:24px;height:24px;border-radius:8px;border:2px solid var(--sage);background:#fff;position:relative;transition:.2s;}
+  .q-check::after{content:"";position:absolute;left:7px;top:3px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) scale(0);transition:transform .18s;}
+  .q-text{font-size:14.5px;line-height:1.55;color:var(--ink);}
+  .q-item input:checked + .q-face{border-color:var(--forest);background:#F3F5EE;}
+  .q-item input:checked + .q-face .q-check{background:var(--forest);border-color:var(--forest);}
+  .q-item input:checked + .q-face .q-check::after{transform:rotate(45deg) scale(1);}
+  .q-item input:focus-visible + .q-face{outline:2px solid var(--terra);outline-offset:2px;}
+  .quiz-nav{display:flex;gap:12px;padding:14px 30px 34px;align-items:center;}
+  .quiz-nav .spacer{flex:1;}
+
+  /* RESULT */
+  .r-top{padding:40px 30px 30px;text-align:center;background:linear-gradient(180deg,#EEF1E7,var(--paper));border-bottom:1px solid var(--line);}
+  .r-eyebrow{font-size:12px;letter-spacing:.3em;color:var(--forest);font-weight:700;margin-bottom:14px;}
+  .r-badge{display:inline-block;font-family:"Shippori Mincho",serif;font-size:clamp(30px,8vw,42px);font-weight:700;color:var(--forest-deep);letter-spacing:.06em;line-height:1.2;}
+  .r-yomi{font-size:14px;color:var(--ink-soft);letter-spacing:.1em;margin-top:2px;}
+  .r-label{display:inline-block;margin-top:16px;padding:7px 20px;border-radius:100px;background:var(--terra-soft);color:#9C4E30;font-size:13.5px;font-weight:700;letter-spacing:.03em;}
+  .r-second{margin-top:14px;font-size:13px;color:var(--ink-soft);}
+  .r-second b{color:var(--terra);font-weight:700;}
+  .r-body{padding:30px;}
+  .r-desc{font-size:15px;color:var(--ink);margin-bottom:28px;}
+  .r-sec-title{font-family:"Shippori Mincho",serif;font-size:16px;color:var(--forest);font-weight:600;display:flex;align-items:center;gap:9px;margin-bottom:14px;letter-spacing:.04em;}
+  .r-sec-title::before{content:"";width:18px;height:1.5px;background:var(--terra);border-radius:2px;}
+  .r-block{margin-bottom:28px;}
+  .feat{display:flex;flex-wrap:wrap;gap:8px;}
+  .feat span{background:#F1F3EB;border:1px solid var(--sage-soft);color:var(--forest-deep);font-size:13px;padding:6px 13px;border-radius:9px;}
+  .yojo{font-size:14.5px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chips span{background:var(--sage-soft);color:var(--forest-deep);font-size:13px;padding:6px 14px;border-radius:100px;font-weight:500;}
+
+  /* ORGAN (五臓) SECTION */
+  .organ-wrap{margin:34px -30px 0;padding:32px 30px 4px;background:#EEF1E7;border-top:1px solid var(--line);}
+  .organ-eyebrow{font-size:12px;letter-spacing:.3em;color:var(--terra);font-weight:700;margin-bottom:8px;}
+  .organ-name{font-family:"Shippori Mincho",serif;font-size:28px;color:var(--forest-deep);font-weight:700;letter-spacing:.08em;}
+  .organ-name small{font-size:15px;color:var(--ink-soft);font-weight:500;letter-spacing:.06em;margin-left:6px;}
+  .organ-role{font-size:14px;color:var(--ink-soft);margin:6px 0 20px;}
+  .connect{background:var(--terra-soft);border-radius:14px;padding:15px 17px;font-size:13.5px;color:#8F4527;line-height:1.75;margin-bottom:26px;}
+  .connect b{font-weight:700;}
+
+  /* BRIDGE (四診) */
+  .bridge{margin:38px 0 4px;text-align:center;}
+  .bridge-eyebrow{font-family:"Shippori Mincho",serif;font-size:16px;color:var(--terra);letter-spacing:.1em;font-weight:600;margin-bottom:16px;}
+  .bridge-lead{font-size:14.5px;color:var(--ink);margin-bottom:14px;}
+  .bridge-lead:last-of-type{margin-bottom:0;}
+  .bridge-lead b{color:var(--forest-deep);font-weight:700;box-shadow:inset 0 -8px 0 var(--sage-soft);}
+  .shindan-row{display:flex;gap:14px;margin-top:26px;text-align:left;}
+  .shindan{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 17px;}
+  .s-name{font-family:"Shippori Mincho",serif;font-size:20px;color:var(--forest-deep);font-weight:700;letter-spacing:.1em;line-height:1.2;}
+  .s-name span{display:block;font-family:"Zen Kaku Gothic New",sans-serif;font-size:11px;color:var(--ink-soft);letter-spacing:.14em;font-weight:500;margin-top:4px;}
+  .shindan p{font-size:12.5px;color:var(--ink-soft);line-height:1.7;margin-top:11px;}
+
+  .cta{margin-top:8px;background:var(--forest-deep);border-radius:18px;padding:28px 26px;text-align:center;color:#F3EEDF;}
+  .cta .catch{font-family:"Shippori Mincho",serif;font-size:18px;letter-spacing:.05em;margin-bottom:6px;color:#fff;}
+  .cta p{font-size:13.5px;color:#CBD1BF;margin-bottom:20px;}
+  .cta a.btn-book{display:inline-block;background:var(--terra);color:#fff;text-decoration:none;padding:14px 34px;border-radius:100px;font-weight:700;font-size:15px;letter-spacing:.05em;box-shadow:0 10px 22px -10px rgba(192,122,91,.8);transition:.25s;}
+  .cta a.btn-book:hover{background:#B06B4C;transform:translateY(-2px);}
+  .cta-eyebrow{font-size:12.5px;letter-spacing:.14em;color:#B9C1AB;margin-bottom:12px;}
+  .cta-head{font-size:20px;line-height:1.55;color:#fff;font-weight:600;margin-bottom:16px;letter-spacing:.03em;}
+  .cta-head b{color:#EEC9B4;font-weight:700;}
+  .cta-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 22px;}
+  .cta-trust span{font-size:11.5px;color:#E7E0CF;border:1px solid rgba(255,255,255,.26);border-radius:100px;padding:5px 12px;letter-spacing:.02em;}
+  .cta-micro{margin-top:18px;font-size:12px;color:#AEB6A2;line-height:1.7;}
+  .disclaimer{padding:22px 30px 30px;font-size:11.5px;color:var(--ink-soft);line-height:1.7;text-align:center;}
+  .retry-wrap{text-align:center;padding:0 30px 34px;}
+  .brandfoot{text-align:center;margin-top:22px;font-size:11px;color:var(--forest);letter-spacing:.14em;}
+
+  @media(max-width:480px){
+    body{padding:16px 10px 40px;}
+    .hero,.r-top{padding-left:22px;padding-right:22px;}
+    .r-body,.intro-note,.disclaimer,.retry-wrap,.ninkatsu-ask{padding-left:22px;padding-right:22px;}
+    .q-list{padding-left:16px;padding-right:16px;}
+    .quiz-nav,.quiz-head{padding-left:22px;padding-right:22px;}
+    .organ-wrap{margin-left:-22px;margin-right:-22px;padding-left:22px;padding-right:22px;}
+    .shindan-row{flex-direction:column;}
+    .hero .meta{gap:16px;}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="card">
+
+    <!-- INTRO -->
+    <section id="intro" class="view active">
+      <div class="hero">
+        <svg class="sprout" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <path d="M24 44V22" stroke="#5B6A50" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M24 26C24 26 16 25 12 18C12 18 22 15 24 24Z" fill="#9AAA8A"/>
+          <path d="M24 22C24 22 25 12 33 9C33 9 33 20 24 22Z" fill="#5B6A50"/>
+          <path d="M24 30C24 30 30 30 34 25C34 25 27 22 24 28Z" fill="#C07A5B"/>
+        </svg>
+        <div class="eyebrow">東洋医学でみる</div>
+        <h1 class="mincho">かんたん<span>体質</span>チェック</h1>
+        <p class="lead">気・血・水（き・けつ・すい）と、五臓（肝・心・脾・肺・腎）の2つの視点から、いまのあなたのからだの傾向をみていきます。当てはまるものにチェックするだけ。</p>
+        <div class="meta">
+          <div>質問<b>33</b></div>
+          <div>みかた<b>気血水×五臓</b></div>
+          <div>所要<b>約3分</b></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="ninkatsu-ask">
+        <div class="na-label mincho">はじめる前に、ひとつだけ。<br>いま、妊活中ですか？</div>
+        <div class="na-opts">
+          <button type="button" class="na-opt" id="naYes" onclick="setNinkatsu(true)">はい</button>
+          <button type="button" class="na-opt" id="naNo" onclick="setNinkatsu(false)">いいえ</button>
+        </div>
+      </div>
+      <div class="intro-note">
+        <p>※ 東洋医学の考え方にもとづくセルフチェックです。医学的な診断ではありません。気になる不調があるときは、鍼灸師や医療機関にご相談くださいね。</p>
+      </div>
+      <div class="start-wrap">
+        <button class="btn btn-primary" onclick="start()">チェックをはじめる</button>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz" class="view">
+      <div class="quiz-head">
+        <div class="progress-row">
+          <div class="progress-track"><div class="progress-fill" id="pfill"></div></div>
+          <div class="progress-label" id="plabel">1 / 5</div>
+        </div>
+        <div class="step-title mincho" id="stepTitle"></div>
+        <div class="step-sub" id="stepSub"></div>
+      </div>
+      <div class="q-list" id="qList"></div>
+      <div class="quiz-nav">
+        <button class="btn btn-ghost" id="backBtn" onclick="back()" style="display:none;">もどる</button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" id="nextBtn" onclick="next()">つぎへ</button>
+      </div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="result" class="view">
+      <div class="r-top">
+        <div class="r-eyebrow">あなたのベース体質は</div>
+        <div class="r-badge mincho" id="rName"></div>
+        <div class="r-yomi" id="rYomi"></div>
+        <div class="r-label" id="rLabel"></div>
+        <div class="r-second" id="rSecond"></div>
+      </div>
+      <div class="r-body">
+        <p class="r-desc" id="rDesc"></p>
+        <div class="r-block">
+          <div class="r-sec-title">こんな傾向がでやすい</div>
+          <div class="feat" id="rFeat"></div>
+        </div>
+
+        <!-- 五臓 -->
+        <div class="organ-wrap">
+          <div class="organ-eyebrow">五臓でみると、特にいたわりたいのは</div>
+          <div class="organ-name mincho" id="oName"></div>
+          <div class="organ-role" id="oRole"></div>
+          <div class="connect" id="oConnect"></div>
+          <div class="r-block">
+            <div class="r-sec-title">出やすいサイン</div>
+            <div class="feat" id="oSign"></div>
+          </div>
+        </div>
+
+        <!-- LINE養生シート -->
+        <div class="line-magnet" id="lineMagnet">
+          <div class="lm-eyebrow">あなただけの「養生シート」をプレゼント🎁</div>
+          <p class="lm-lead">タイプ別の具体的な養生法・おすすめ食材・おうちでできるセルフケアは、公式LINEで無料でお届けしています。</p>
+
+          <div class="lm-box">
+            <div class="lm-box-head"><span class="lm-num">1</span>まずは友だち登録</div>
+            <a class="lm-btn" id="lmAdd" href="#" target="_blank" rel="noopener">LINEで友だち追加</a>
+          </div>
+
+          <div class="lm-box">
+            <div class="lm-box-head"><span class="lm-num">2</span>キーワードを送る</div>
+            <div class="lm-keyword">「<b id="lmKey">肝・血虚</b>」</div>
+            <a class="lm-btn outline" id="lmSend" href="#" target="_blank" rel="noopener">キーワードを送る</a>
+            <p class="lm-note" id="lmNote">ボタンを押すとキーワードが入力された状態でLINEが開きます。<br>そのまま送信してくださいね。</p>
+          </div>
+        </div>
+
+        <div class="bridge">
+          <div class="bridge-eyebrow">このチェックは、入り口です</div>
+          <p class="bridge-lead">セルフチェックでわかるのは、体質のおおまかな傾向まで。実際のからだは、もっと繊細で、日々ゆらいでいます。</p>
+          <p class="bridge-lead">ひなたの森では、東洋医学の「四診（ししん）」であなたの今をていねいに見立て、<b>本当の体質</b>に合わせた鍼灸をおこないます。</p>
+          <div class="shindan-row">
+            <div class="shindan">
+              <div class="s-name">脈診<span>みゃくしん</span></div>
+              <p>手首の脈にふれ、気血のめぐりや五臓のバランスを読み取ります。</p>
+            </div>
+            <div class="shindan">
+              <div class="s-name">腹診<span>ふくしん</span></div>
+              <p>おなかにやさしく手をあて、奥にひそむ冷えや滞りを確かめます。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 妊活の方へ（妊活中=はい のとき表示） -->
+        <div class="kounotori" id="kounotori" style="display:none;">
+          <div class="k-eyebrow">妊活中のあなたへ</div>
+          <div class="k-title mincho">「こうのとり便り」もお届けしています</div>
+          <p>妊活中の方に、東洋医学の視点から季節の養生や心づもりを、公式LINEでそっとお届けしています。ご希望の方は、登録後に「こうのとり」と送ってくださいね。</p>
+        </div>
+
+        <div class="cta">
+          <div class="cta-eyebrow mincho">その場しのぎではなく、土台から。</div>
+          <div class="cta-head mincho" id="ctaHead"></div>
+          <p>ひなたの森は、女性専用・完全予約制の個室鍼灸院。女性鍼灸師が、おひとりずつじっくりお話をうかがって、あなたの体質に合わせたケアをご提案します。鍼がはじめての方も、どうぞ安心してお越しくださいね。</p>
+          <div class="cta-trust">
+            <span>女性専用</span><span>完全予約制の個室</span><span>女性鍼灸師</span><span>1日5名限定</span>
+          </div>
+          <a class="btn-book" id="bookLink" href="#" target="_blank" rel="noopener">体質に合わせたケアを<br>予約する</a>
+          <div class="cta-micro">「どのメニューが合うかわからない」という方も大丈夫。<br>まずはお気軽にご相談くださいね。</div>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        体質はひとつに固定されるものではなく、複数のタイプや臓が重なることもよくあります。季節や体調でも移り変わります。<br>
+        このチェックは東洋医学の考え方にもとづく目安であり、医学的な診断ではありません。
+      </div>
+      <div class="retry-wrap">
+        <button class="btn btn-ghost" onclick="restart()">もう一度チェックする</button>
+      </div>
+    </section>
+
+  </div>
+  <div class="brandfoot mincho">ひなたの森鍼灸院</div>
+</div>
+
+<script>
+/* ============================================================
+   ▼▼ ここだけ設定してください ▼▼
+   bookingUrl  … 予約ページのURL
+   lineUrl     … LINEの友だち追加URL（lin.ee/…）
+   lineBasicId … LINE公式アカウントのベーシックID（@から始まるID）
+                 これを入れると「キーワードを送る」ボタンで
+                 キーワードが自動入力された状態でLINEが開きます。
+                 空欄のままだとボタンは出ず、キーワードだけ表示されます。
+   ============================================================ */
+const CONFIG = {
+  bookingUrl:  "https://hinata-karte.vercel.app/yoyaku",  // 予約ページ
+  lineUrl:     "https://lin.ee/Sv3JjzP",                   // 友だち追加
+  lineBasicId: "@201bwzwd"                                 // ベーシックID
+};
+
+/* ===== 気血水タイプ ===== */
+const TYPES = {
+  kikyo:{name:"気虚",yomi:"ききょ",label:"エネルギー不足タイプ",
+    desc:"気（エネルギー）が不足しやすく、疲れやすかったり、胃腸や免疫がゆらぎやすい状態。がんばりすぎたあとや、産後・育児のさなかにも傾きやすい体質です。",
+    feat:["疲れやすい","胃腸が弱い","風邪をひきやすい","気力がわきにくい"],
+    yojo:"消化にやさしいものを、よく噛んでゆっくりと。冷たいもの・生ものは控えめに。がんばりすぎず、こまめに休息を。息が上がらない程度の軽い運動で、気をめぐらせましょう。",
+    food:["米","山芋","かぼちゃ","鶏肉","なつめ","いも類"]},
+  kekkyo:{name:"血虚",yomi:"けっきょ",label:"栄養・うるおい不足タイプ",
+    desc:"血（けつ）が不足し、栄養やうるおいが全身にゆきわたりにくい状態。肌・髪・目・睡眠・生理に影響が出やすく、女性に多い傾向です。",
+    feat:["顔色がさえない","乾燥・爪が割れる","目が疲れる","眠りが浅い・夢が多い"],
+    yojo:"血を養う食材をしっかりと。夜ふかしは避けましょう（血は夜つくられます）。目やスマホの使いすぎにも注意して、こまめに休ませてあげてください。",
+    food:["レバー","赤身肉","ほうれん草","黒豆","なつめ","黒ごま","人参"]},
+  oketsu:{name:"瘀血",yomi:"おけつ",label:"血のめぐり停滞タイプ",
+    desc:"血のめぐりが滞り、痛みやこり、生理トラブルが出やすい状態。冷えや長時間のデスクワークで悪化しやすい体質です。",
+    feat:["生理痛・経血の塊","刺す肩こり・腰痛・頭痛","くま・くすみ","あざができやすい"],
+    yojo:"とにかく温めて、めぐらせること。同じ姿勢を続けず、こまめに体を動かして。ウォーキングなど適度な運動を習慣にすると変わりやすいタイプです。",
+    food:["青魚","玉ねぎ","生姜","酢","黒きくらげ","シナモン"]},
+  suitai:{name:"水滞",yomi:"すいたい",label:"水分代謝の停滞タイプ",
+    desc:"水分の巡りが滞り、むくみや体の重だるさ、めまいが出やすい状態。冷えや甘いもの、湿気で悪化しやすい体質です。",
+    feat:["むくみ・重だるさ","雨の日に不調","軟便になりやすい","水太りしやすい"],
+    yojo:"冷たいもの・甘いもの・脂っこいものは控えめに。水分のとりすぎにも注意を。じんわり汗をかく軽い運動で、余分な水分の排出をうながしましょう。",
+    food:["小豆","はと麦","とうもろこし","冬瓜","黒豆","生姜"]},
+  inkyo:{name:"陰虚",yomi:"いんきょ",label:"うるおい（陰）不足タイプ",
+    desc:"体をうるおし冷ます「陰」が不足し、ほてりや乾燥、寝つきの悪さが出やすい状態。過労・寝不足・更年期にも傾きやすい体質です。",
+    feat:["ほてり・のぼせ・寝汗","口や喉の乾き","乾燥ぎみの便秘","眠りが浅い"],
+    yojo:"体をうるおす食材を意識して。夜ふかし・過労は陰をさらに消耗させるので避けましょう。辛いもの・アルコール・カフェインは控えめが安心です。",
+    food:["白きくらげ","豆腐","梨","れんこん","山芋","はちみつ","黒ごま"]},
+  kitai:{name:"気滞",yomi:"きたい",label:"気のめぐり停滞タイプ",
+    desc:"気のめぐりが滞り、はり感やイライラ、情緒の波が出やすい状態。ストレスや緊張で悪化しやすく、生理前（PMS）の不調にも関わります。",
+    feat:["イライラ・ため息","お腹や胸のはり","喉のつまり感","PMSの気分の波"],
+    yojo:"香りのよいもので気をめぐらせて。深呼吸や軽い運動、好きなことに没頭する時間でリラックスを。ため込まず、こまめに発散するのがこのタイプの養生です。",
+    food:["柑橘","しそ","ミント","セロリ","三つ葉","ジャスミン茶"]}
+};
+
+/* ===== 五臓 ===== */
+const ORGANS = {
+  kan:{name:"肝",yomi:"かん",role:"気と血のめぐり、情緒をコントロールする司令塔。目・筋・爪とも深く関わります。",
+    sign:["目の疲れ・かすみ","イライラ・情緒の波","PMS・生理不順","筋のこわばり・つり"],
+    care:"ストレスをためこまず、こまめに発散を。香りのよいもの（柑橘・ミント・しそ）や、目を休める時間を大切に。夜ふかしは肝の血を消耗させるので控えめにしましょう。",
+    food:["柑橘","しそ","セロリ","緑の野菜","あさり","なつめ"]},
+  shin:{name:"心",yomi:"しん",role:"血をめぐらせ、「こころ（神）」を安定させる臓。眠りや精神の落ち着きを支えます。",
+    sign:["動悸・不安感","不眠・夢が多い","物忘れ・集中力低下","口内炎・舌先の赤み"],
+    care:"睡眠と休息をいちばんに。考えごとで頭がいっぱいになりやすいので、ゆっくり深呼吸できる時間を。カフェインや刺激物は控えめが安心です。",
+    food:["なつめ","蓮の実","百合根","小麦","竜眼","赤い食材"]},
+  hi:{name:"脾",yomi:"ひ",role:"食べたものを気血に変える、からだの土台となる消化の要（かなめ）です。",
+    sign:["食欲のムラ・食後の眠気","軟便・胃腸の弱さ","むくみ・だるさ","甘いもの欲・あざ"],
+    care:"温かく消化にやさしいものを、よく噛んで。冷たいもの・甘いもの・生ものは控えめに。食べすぎやながら食べを避けて、胃腸をいたわりましょう。",
+    food:["米","山芋","かぼちゃ","いんげん豆","鶏肉","なつめ"]},
+  hai:{name:"肺",yomi:"はい",role:"呼吸で気を取り込み、肌・粘膜のバリアを守る臓。乾燥や外気の影響を受けやすい面も。",
+    sign:["風邪をひきやすい・のど鼻が弱い","咳・痰","肌の乾燥・敏感","気分の落ち込み"],
+    care:"のど・肌の「うるおい」を守ることが中心に。乾燥と冷えから守り、うるおす食材を。深い呼吸を意識して、睡眠をしっかりとりましょう。",
+    food:["白きくらげ","れんこん","梨","大根","百合根","はちみつ"]},
+  jin:{name:"腎",yomi:"じん",role:"生命力（精）を蓄え、生殖・成長・老化・水分を司る「根っこ」。妊活の土台にも深く関わります。",
+    sign:["腰痛・膝のだるさ・冷え","頻尿・むくみ・耳鳴り","白髪・抜け毛","妊活のゆらぎ・老けを感じる"],
+    care:"とにかく冷やさないこと、そして「ためこむ」休養を。腰や下半身を温め、睡眠でしっかり充電を。黒い食材やねばりのある食材が腎を養います。妊活の土台づくりにも大切な臓です。",
+    food:["黒豆","黒ごま","黒きくらげ","山芋","くるみ","えび"]}
+};
+
+/* ===== 気血水×五臓 のつながり ===== */
+const LINKS = {
+  "kikyo|hi":"「脾（胃腸）」の弱りが、気の不足（気虚）につながっているタイプ。まずは胃腸をいたわることが、いちばんの近道です。",
+  "kikyo|hai":"「肺」の気の弱りが、疲れや免疫の低下（気虚）に。呼吸と睡眠をととのえることから始めましょう。",
+  "kekkyo|kan":"「肝」に十分な血が貯えられない状態（肝血虚）。血を養うことで、目や生理の不調もやわらいでいきます。",
+  "kekkyo|shin":"「心」に血が届きにくく、眠りや気持ちの安定に影響が出やすいタイプ。血を養う養生が支えになります。",
+  "inkyo|jin":"「腎」のうるおい（陰）が不足しているタイプ（腎陰虚）。妊活や年齢とのつきあいの、土台づくりにも大切なところです。",
+  "inkyo|hai":"「肺」の乾燥タイプ。のど・肌・呼吸のうるおいを守ることが、ケアの中心になります。",
+  "inkyo|shin":"「心」に熱がこもって眠りが浅くなりやすいタイプ。うるおしながら、しっかり休息をとりましょう。",
+  "kitai|kan":"「肝」の気のめぐりが滞ったタイプ（気滞の代表格）。ストレスをためこまない工夫が、いちばんの鍵になります。",
+  "suitai|hi":"「脾」の水はけの力が落ちて、余分な水がたまるタイプ。胃腸を整えると、むくみも軽くなっていきます。",
+  "oketsu|kan":"「肝」のめぐりの停滞から、血の滞り（瘀血）へ。温めて動かすことと、ストレスケアが両輪になります。",
+  "oketsu|jin":"冷えと「腎」の弱りが、血のめぐりの停滞に。下半身の冷え対策を、とくに大切にしましょう。"
+};
+const LINK_FALLBACK = "「気血水」と「五臓」はたがいに影響し合っています。両方の視点でいたわると、より整いやすくなりますよ。";
+
+/* ===== ステップ ===== */
+const STEPS = [
+  { title:"からだ・元気のこと", sub:"最近のことで、当てはまるものにチェックしてください", items:[
+    {t:"kikyo", x:"疲れやすく、少し動いただけでもぐったりする"},
+    {t:"kikyo", x:"風邪をひきやすい／治りにくい"},
+    {t:"kikyo", x:"食後に眠くなる、胃腸が弱くもたれやすい"},
+    {t:"kekkyo",x:"顔色が青白い、または血色が悪いと言われる"},
+    {t:"kekkyo",x:"肌や髪が乾燥しやすい、爪が割れやすい"},
+    {t:"kekkyo",x:"目が疲れやすい・かすむ、または足がつりやすい"}
+  ]},
+  { title:"めぐり・冷えのこと", sub:"痛みや冷え、めぐりについて当てはまるものを", items:[
+    {t:"oketsu",x:"生理痛が重い、経血にレバー状の塊がある"},
+    {t:"oketsu",x:"慢性的な肩こり・腰痛・頭痛がある（刺すような、場所が動かない痛み）"},
+    {t:"oketsu",x:"シミ・くま・くすみが気になる、唇の色が暗い"},
+    {t:"suitai",x:"むくみやすく、体が重だるい"},
+    {t:"suitai",x:"雨の日や湿気の多い日に、体調や頭が重くなる"},
+    {t:"suitai",x:"軟便・下痢になりやすい、または痰がからみやすい"}
+  ]},
+  { title:"こころ・うるおいのこと", sub:"気分やうるおいについて当てはまるものを", items:[
+    {t:"inkyo", x:"手足がほてる・のぼせる、寝汗をかく"},
+    {t:"inkyo", x:"口や喉が乾きやすい、便が乾燥ぎみ"},
+    {t:"inkyo", x:"寝つきが悪い、眠りが浅くて夢をよく見る"},
+    {t:"kitai", x:"イライラしたり怒りっぽくなる、ため息が多い"},
+    {t:"kitai", x:"お腹や胸・脇が張る、ゲップやおならが多い"},
+    {t:"kitai", x:"生理前（PMS）に胸の張りや気分の波が強くなる"}
+  ]},
+  { title:"からだをつくる力のこと", sub:"胃腸・お肌・鼻など、当てはまるものを", items:[
+    {o:"hi",  x:"あざができやすい、または経血がだらだらと長く続く"},
+    {o:"hi",  x:"甘いものや炭水化物が無性に欲しくなる"},
+    {o:"hi",  x:"くよくよ考え込みやすい、口の中が粘つく・口周りが荒れやすい"},
+    {o:"hai", x:"鼻炎・鼻づまり・花粉症など、鼻の不調が出やすい"},
+    {o:"hai", x:"肌がかゆくなりやすい、アレルギーが出やすい"},
+    {o:"hai", x:"悲しい気分になりやすい・気分が沈みがち、声がかすれやすい"}
+  ]},
+  { title:"こころと生命力のこと", sub:"気分・めぐり・生命力について当てはまるものを", items:[
+    {o:"kan", x:"ストレスがかかると胃腸の調子が悪くなる・食欲が落ちる"},
+    {o:"kan", x:"こめかみや目の奥が痛くなるタイプの頭痛がある"},
+    {o:"kan", x:"緊張や環境の変化で気持ちがゆれやすい、決断や切り替えが苦手"},
+    {o:"shin",x:"動悸や胸のドキドキ、不安でそわそわすることがある"},
+    {o:"shin",x:"物忘れが増えた、集中力が続かない"},
+    {o:"shin",x:"口内炎ができやすい・舌先が赤い、または緊張すると汗をかく"},
+    {o:"jin", x:"腰や膝が痛む・だるい、力が入りにくい、下半身が冷える"},
+    {o:"jin", x:"頻尿・夜間のトイレ、耳鳴り、白髪・抜け毛が気になる"},
+    {o:"jin", x:"妊活・生殖の悩みがある、または疲れると一気に老けを感じる"}
+  ]}
+];
+
+let step = 0;
+let ninkatsu = false;
+const answers = {};
+
+function setNinkatsu(v){
+  ninkatsu = v;
+  document.getElementById("naYes").classList.toggle("on", v===true);
+  document.getElementById("naNo").classList.toggle("on", v===false);
+}
+
+function renderStep(){
+  const s = STEPS[step];
+  document.getElementById("stepTitle").textContent = s.title;
+  document.getElementById("stepSub").textContent = s.sub;
+  document.getElementById("plabel").textContent = (step+1)+" / "+STEPS.length;
+  document.getElementById("pfill").style.width = ((step/STEPS.length)*100 + 5)+"%";
+
+  const list = document.getElementById("qList");
+  list.innerHTML = "";
+  s.items.forEach((it,i)=>{
+    const key = step+"-"+i;
+    const axis = it.t ? "t" : "o";
+    const val  = it.t || it.o;
+    const checked = answers[key] && answers[key].checked ? "checked" : "";
+    const label = document.createElement("label");
+    label.className = "q-item";
+    label.innerHTML =
+      '<input type="checkbox" data-key="'+key+'" data-axis="'+axis+'" data-val="'+val+'" '+checked+'>'+
+      '<span class="q-face"><span class="q-check"></span><span class="q-text">'+it.x+'</span></span>';
+    list.appendChild(label);
+  });
+  list.querySelectorAll("input").forEach(inp=>{
+    inp.addEventListener("change",e=>{
+      answers[e.target.dataset.key]={axis:e.target.dataset.axis,val:e.target.dataset.val,checked:e.target.checked};
+    });
+  });
+
+  document.getElementById("backBtn").style.display = step===0 ? "none" : "inline-block";
+  document.getElementById("nextBtn").textContent = step===STEPS.length-1 ? "結果をみる" : "つぎへ";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function start(){ show("quiz"); renderStep(); }
+function back(){ if(step>0){step--; renderStep();} }
+function next(){ if(step<STEPS.length-1){step++; renderStep();} else{ diagnose(); } }
+
+function diagnose(){
+  const ts={kikyo:0,kekkyo:0,oketsu:0,suitai:0,inkyo:0,kitai:0};
+  const os={kan:0,shin:0,hi:0,hai:0,jin:0};
+  Object.values(answers).forEach(a=>{
+    if(!a.checked) return;
+    if(a.axis==="t") ts[a.val]++; else os[a.val]++;
+  });
+  document.getElementById("pfill").style.width="100%";
+
+  const tRank=Object.keys(ts).sort((a,b)=>ts[b]-ts[a]);
+  const oRank=Object.keys(os).sort((a,b)=>os[b]-os[a]);
+  const primary=tRank[0], organ=oRank[0];
+  const p=TYPES[primary], o=ORGANS[organ];
+
+  document.getElementById("rName").textContent=p.name;
+  document.getElementById("rYomi").textContent="（"+p.yomi+"）";
+  document.getElementById("rLabel").textContent=p.label;
+  document.getElementById("rDesc").textContent=p.desc;
+
+  const sec=document.getElementById("rSecond");
+  if(ts[tRank[1]]>0 && ts[tRank[1]]>=ts[primary]-1){
+    sec.innerHTML='<b>'+TYPES[tRank[1]].name+'（'+TYPES[tRank[1]].yomi+'）</b>の傾向も見られます';
+    sec.style.display="block";
+  }else sec.style.display="none";
+
+  fill("rFeat",p.feat,"feat");
+
+  document.getElementById("oName").innerHTML=o.name+'<small>（'+o.yomi+'）</small>';
+  document.getElementById("oRole").textContent=o.role;
+  fill("oSign",o.sign,"feat");
+
+  const link=LINKS[primary+"|"+organ]||LINK_FALLBACK;
+  document.getElementById("oConnect").innerHTML=link;
+
+  // LINE：キーワードは「五臓・気血水」（例：肝・血虚）
+  const keyword = o.name + "・" + p.name;
+  document.getElementById("lmKey").textContent = keyword;
+
+  const addBtn = document.getElementById("lmAdd");
+  if(CONFIG.lineUrl){ addBtn.href = CONFIG.lineUrl; }
+  document.getElementById("lineMagnet").style.display = CONFIG.lineUrl ? "block" : "none";
+
+  const sendBtn = document.getElementById("lmSend");
+  const note = document.getElementById("lmNote");
+  if(CONFIG.lineBasicId){
+    const id = CONFIG.lineBasicId.startsWith("@") ? CONFIG.lineBasicId : "@"+CONFIG.lineBasicId;
+    sendBtn.href = "https://line.me/R/oaMessage/" + encodeURIComponent(id) + "/?" + encodeURIComponent(keyword);
+    sendBtn.style.display = "inline-block";
+    note.innerHTML = "ボタンを押すとキーワードが入力された状態でLINEが開きます。<br>そのまま送信してくださいね。";
+  }else{
+    sendBtn.style.display = "none";
+    note.textContent = "友だち登録のあと、トーク画面にこのキーワードを送ってくださいね。";
+  }
+
+  // 妊活中の方だけ「こうのとり便り」を表示
+  document.getElementById("kounotori").style.display = ninkatsu ? "block" : "none";
+
+  document.getElementById("ctaHead").innerHTML='「<b>'+p.name+'</b>」の傾向がある今こそ、根本から整えていきませんか？';
+  document.getElementById("bookLink").href=CONFIG.bookingUrl||"#";
+
+  show("result");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function fill(id,arr,cls){
+  const el=document.getElementById(id); el.innerHTML="";
+  arr.forEach(v=>{const s=document.createElement("span");s.textContent=v;el.appendChild(s);});
+}
+
+function restart(){
+  step=0;
+  for(const k in answers) delete answers[k];
+  document.getElementById("pfill").style.width="0";
+  show("intro");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function show(id){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+</script>
+</body>
+</html>
